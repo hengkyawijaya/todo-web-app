@@ -1,0 +1,7 @@
+export const FETCH_POSTS = 'FETCH_POSTS'
+export const FETCH_POST = 'FETCH_POST'
+export const SUCCESS = 'SUCCESS'
+export const ERROR = 'ERROR'
+export const CHECK_AUTH = 'CHECK_AUTH'
+export const LOGIN_AUTH = 'LOGIN_AUTH'
+export const SIGNUP_USER = 'SIGNUP_USER'
