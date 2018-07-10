@@ -6,7 +6,7 @@ import logo from './logo.svg';
 import './App.css';
 import Header from './component/general/Header';
 import Loading from './component/general/Loading';
-
+import Message from './component/general/Message';
 
 
 const HomePage = Loadable({
@@ -19,15 +19,22 @@ const LoginPage = Loadable({
   loading: Loading,
 });
 
+const SignupPage = Loadable({
+  loader: () => import('./component/SignupPage'),
+  loading: Loading,
+});
+
 class App extends Component {
   render() {
     return (
       <BrowserRouter>
         <div>
         <Header/>
+        <Message/>
           <Switch>
-            <Route exact={true} to='/' component={HomePage}/>
-            <Route to='/login' component={LoginPage}/>
+            <Route exact path='/' component={HomePage}/>
+            <Route exact path='/login' component={LoginPage}/>
+            <Route exact path='/register' component={SignupPage}/>
           </Switch>
         </div>
       </BrowserRouter>

@@ -14,6 +14,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import postAction from '../action/postAction';
+import { LOCAL_TOKEN } from '../config';
 
 const styles = theme => ({
   root: {
@@ -48,9 +49,18 @@ class HomePage extends Component {
       contentEdit: null
     }
   }
+
+  componentWillMount(){
+    const token = localStorage.getItem(LOCAL_TOKEN);
+    if(!token){
+        this.props.history.push('/login')
+    }  
+  }
   
   componentDidMount(){
       const { search, searchBy, order, orderBy, page, limit } = this.state
+
+
       this.props.fetchPosts({ search, searchBy, order, orderBy, page, limit  });
   }
 
@@ -104,7 +114,7 @@ class HomePage extends Component {
   }
 
   renderPost() {
-    const { posts, classes } = this.props;
+    const { posts, classes, auth } = this.props;
     const { anchorEl, menu, edit, contentEdit } = this.state;
     
 
@@ -151,7 +161,9 @@ class HomePage extends Component {
               <Typography>{post.user.name}</Typography>
               <Typography >{post.content}</Typography>
             </Grid>
-            <Grid item >
+            {
+              auth._id === post.user._id ? (
+                <Grid item >
                 <IconButton
               aria-label="More"
               aria-owns={`menu-${post._id}`}
@@ -177,6 +189,10 @@ class HomePage extends Component {
                 
               </Menu>
             </Grid>
+              ) : false
+
+            }
+            
 
                 </Grid>
               )
@@ -264,9 +280,10 @@ HomePage.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-function mapStateToProps({ posts }){
+function mapStateToProps({ posts, auth }){
   return {
-    posts
+    posts,
+    auth
   }
 }
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect  } from 'react-redux';
-import { Link } from 'react-router-dom';
+
 import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
@@ -42,12 +42,13 @@ const styles = theme => ({
     
   });
 
-class LoginPage extends Component {
+class SignupPage extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
+            name: '',
             email : '',
             password: ''     
         }
@@ -79,17 +80,17 @@ class LoginPage extends Component {
 
     onHandleSubmit(e){
         const data = this.state;
-        const { loginUser } = this.props;
+        const { signupUser } = this.props;
 
         e.preventDefault()
 
-        loginUser(data, () => this.props.history.push('/'))
+        signupUser(data, () => this.props.history.push('/login'))
         
     }
 
     render(){
         const { classes } = this.props
-        const { email, password } = this.state
+        const { name, email, password } = this.state
 
         return (
             <div className='login-bg'>
@@ -101,6 +102,16 @@ class LoginPage extends Component {
                         <form  className={classes.container} noValidate autoComplete="off" onSubmit={e => this.onHandleSubmit(e)}>
 
                             <img className={classes.logo} src={LogoHospital}/>
+
+                            <TextField
+                            id="name"
+                            label="Name"
+                            name="name"
+                            className={classes.textField}
+                            onChange={e => this.onHandleChange(e)}
+                            value={name}
+                            margin="normal"
+                            />
 
                             <TextField
                             id="email"
@@ -124,13 +135,7 @@ class LoginPage extends Component {
 
                             
                             <Button type='submit' style={{ marginTop: 30 }} variant="raised" color="primary" className={classes.button}>
-                                Login
-                            </Button>
-                            <Button  type='button' style={{ marginTop: 30 }} variant="raised" color="secondary" className={classes.button} 
-                              component={Link}
-                              to='/register'
-                            >
-                              Signup
+                                REGISTER
                             </Button>
 
                          </form>
@@ -146,7 +151,7 @@ class LoginPage extends Component {
 }
 
 
-LoginPage.propTypes = {
+SignupPage.propTypes = {
     classes: PropTypes.object.isRequired,
   };
 
@@ -157,4 +162,4 @@ function mapStateToProps ({ auth }) {
 }
   
 
-export default connect(mapStateToProps, authAction)(withStyles(styles)(LoginPage));
+export default connect(mapStateToProps, authAction)(withStyles(styles)(SignupPage));

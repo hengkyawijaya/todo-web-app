@@ -29,7 +29,7 @@ export default {
             })
         }
     },
-    fetchPosts: ({ search=false,searchBy=false, page=false, limit=false, orderBy=false, order=false }) => async dispatch => {
+    fetchPosts: ({ search=false,searchBy=false, page=false, limit=false, orderBy='desc', order='createdAt' }) => async dispatch => {
         try {
         
         const response = await axios.get(`${BASE_API_URL}/posts?${search ? `search=${search}&` : '' }${searchBy ? `searchBy=${searchBy}&`: '' }${page ? `page=${page}&` : ''}${limit ? `limit=${limit}&`: ''}${orderBy ? `orderBy=${orderBy}&`: ''}${order ? `order=${order}`: ''}`, {

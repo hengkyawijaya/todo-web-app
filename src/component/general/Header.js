@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link, withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -38,9 +39,15 @@ class Header extends Component {
         anchorEl: null,
       };
 
-    componentDidMount(){
-      this.props.checkAuth();
+    async componentDidMount(){
+      await this.props.checkAuth();
+      this.props.auth ? this.setState({
+        auth: true
+      }) : this.setState({
+        auth: false
+      })
     }
+
 
     handleMenu = event => {
         this.setState({ anchorEl: event.currentTarget });
@@ -50,9 +57,10 @@ class Header extends Component {
         this.setState({ anchorEl: null });
       };
 
-      handleLogout = () => {
-        this.setState({ anchorEl: null });
-        localStorage.removeItem('todo-token');
+      handleLogout = async () => {
+        
+        this.setState({ anchorEl: null, auth: false });
+        await this.props.logoutUser(() => this.props.history.push('/login'));
         
       }
     render(){
@@ -60,6 +68,7 @@ class Header extends Component {
         const { anchorEl } = this.state;
         const open = Boolean(anchorEl);
 
+        console.log(auth);
 
 
       return (
@@ -70,7 +79,7 @@ class Header extends Component {
               <MenuIcon />
             </IconButton>
             <Typography variant="title" color="inherit" className={classes.flex}>
-              Title
+              TODO APP
             </Typography>
             {auth ? (
               <div>
@@ -96,13 +105,13 @@ class Header extends Component {
                   open={open}
                   onClose={this.handleClose}
                 >
-                  
+                  <MenuItem >{auth.name}</MenuItem>
                   <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
                 </Menu>
               </div>
             ) : (
               <div>
-                <Button color="inherit">Login</Button>
+                <Button color="inherit" component={Link} to='/login'>Login</Button>
               </div>
             )}
           </Toolbar>
@@ -122,4 +131,4 @@ class Header extends Component {
     }
   }
 
-export default connect(mapStateToProps, authAction)(withStyles(styles)(Header));
+export default withRouter(connect(mapStateToProps, authAction)(withStyles(styles)(Header)));

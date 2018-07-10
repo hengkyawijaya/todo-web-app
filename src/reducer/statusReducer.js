@@ -4,7 +4,7 @@ export default function (state=false, action) {
     switch (action.type)
     {
         case SUCCESS:
-            return action.payload;
+            return action.payload.status;
 
         case ERROR:
             return {...state, ...action.payload.response.data.status}
